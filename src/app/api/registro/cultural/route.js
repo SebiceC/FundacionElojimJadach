@@ -10,6 +10,8 @@ import {
   AreaInteresCultural,
 } from "@prisma/client";
 
+console.log("DEBUG ENUM EstratoSocial:", EstratoSocial);
+
 // Enums válidos
 const ESTRATOS = Object.values(EstratoSocial);
 const GRUPOS_ETNICOS = Object.values(GrupoEtnico);
