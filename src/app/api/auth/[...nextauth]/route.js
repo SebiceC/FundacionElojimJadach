@@ -12,13 +12,18 @@ export const authOptions = {
                 password: {label: "Password", type: "password", placeholder: "*******"}
             }, 
             async authorize(credentials, req) {
-                // console.log(credentials)
 
                 const userFound = await db.users.findUnique({
-                    where: {
-                        email: credentials.email
+                    where: { email: credentials.email },
+                    select: {
+                        id: true,
+                        name: true,
+                        lastName: true,
+                        email: true,
+                        password: true,
+                        rolId: true, // 🔥 ¡esto es clave!
                     }
-                })
+                });
 
                 if (!userFound || !(await bcrypt.compare(credentials.password, userFound.password))) {
                     throw new Error("Credenciales incorrectas");
@@ -31,9 +36,9 @@ export const authOptions = {
                 return {
                     id: userFound.id,
                     name: userFound.name,
-                    lastname: userFound.lastname,
+                    lastName: userFound.lastName,
                     email: userFound.email,
-                    id_rol: userFound.id_rol
+                    rolId: userFound.rolId
                 }
             },
         }),
@@ -48,13 +53,13 @@ export const authOptions = {
     },
     callbacks: {
         async session({ session, token }) {
-            session.user.id_rol = token.id_rol; // Incluye el rol en la sesión
+            session.user.rolId = token.rolId; // Incluye el rol en la sesión
             session.user.document = token.email; //incluir el email en la sesión
             return session;
         },
         async jwt({ token, user }) {
             if (user) {
-            token.id_rol = user.id_rol; // Almacena el rol en el token
+            token.rolId = user.rolId; // Almacena el rol en el token
             token.email = user.email //almacenar el document 
             }
             return token;

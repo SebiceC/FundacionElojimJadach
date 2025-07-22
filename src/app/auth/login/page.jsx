@@ -35,6 +35,7 @@ const loginPage = () => {
     setIsLoading(true);
 
     try {
+      
       const res = await signIn("credentials", {
         email: data.email,
         password: data.password,
