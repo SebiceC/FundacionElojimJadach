@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && prisma db push && prisma db seed",
     "dev": "next dev ",
     "build": "next build",
     "start": "next start -p 8081",
@@ -65,5 +65,8 @@
   "resolutions": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "prisma": {
+  "seed": "node prisma/seed.js"
   }
 }
